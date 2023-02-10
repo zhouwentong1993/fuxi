@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     private static final int EVERY = 1000000;
-    private static final String BASE_DIR = "/Users/wentong/fuxi/";
+    private static final String BASE_DIR = "/Users/zhouwentong/fuxi/";
 
     public static void main(String[] args) {
         Stopwatch stopwatch = Stopwatch.createStarted();

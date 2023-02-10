@@ -13,6 +13,7 @@
         <module>schedule</module>
         <module>core</module>
         <module>test</module>
+        <module>common</module>
     </modules>
 
     <properties>
