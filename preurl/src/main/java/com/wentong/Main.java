@@ -9,10 +9,11 @@ import com.wentong.pre.generator.UrlGenerator;
 import java.io.File;
 import java.util.Optional;
 
+import static com.wentong.constants.Constants.BASE_DIR;
+
 public class Main {
 
     private static final int EVERY = 1000000;
-    private static final String BASE_DIR = "/Users/zhouwentong/fuxi/";
 
     public static void main(String[] args) {
 
