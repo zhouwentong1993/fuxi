@@ -1,7 +1,6 @@
 package com.wentong;
 
 import cn.hutool.core.io.FileUtil;
-import com.google.common.base.Stopwatch;
 import com.wentong.pre.filter.Filter;
 import com.wentong.pre.filter.GuavaBloomFilter;
 import com.wentong.pre.generator.Base62Generator;
@@ -9,7 +8,6 @@ import com.wentong.pre.generator.UrlGenerator;
 
 import java.io.File;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
 
@@ -17,7 +15,6 @@ public class Main {
     private static final String BASE_DIR = "/Users/zhouwentong/fuxi/";
 
     public static void main(String[] args) {
-        Stopwatch stopwatch = Stopwatch.createStarted();
 
         UrlGenerator generator = new Base62Generator();
         Filter filter = new GuavaBloomFilter();
@@ -35,8 +32,6 @@ public class Main {
             stringBuilder.append(generate);
         }
 
-        long elapsed = stopwatch.elapsed(TimeUnit.MILLISECONDS);
-        System.out.println("生成 " + counter + " 个字符串耗时：" + elapsed + "ms");
 
         System.out.println("开始写入文件");
         boolean exist = FileUtil.exist(BASE_DIR);
