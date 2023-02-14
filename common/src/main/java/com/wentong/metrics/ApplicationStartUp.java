@@ -4,10 +4,10 @@ public interface ApplicationStartUp {
 
     ApplicationStartUp DEFAULT = new DefaultApplicationStartUp("default");
 
-    void start(String name);
+    ApplicationStartUp start(String name);
 
-    void start();
+    ApplicationStartUp start();
 
-    void stop();
+    ApplicationStartUp stop();
 
 }

@@ -1,9 +1,11 @@
 package com.wentong.metrics;
 
 import com.google.common.base.Stopwatch;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class DefaultApplicationStartUp implements ApplicationStartUp {
 
     private String name;
@@ -23,21 +25,24 @@ public class DefaultApplicationStartUp implements ApplicationStartUp {
     }
 
     @Override
-    public void start(String name) {
+    public ApplicationStartUp start(String name) {
         this.name = name;
         stopwatch = Stopwatch.createStarted();
-        System.out.println("metrics of [" + name + "] start");
+        log.info("metrics of [" + name + "] start");
+        return this;
     }
 
     @Override
-    public void start() {
-        System.out.println("metrics of [" + name + "] start");
+    public ApplicationStartUp start() {
+        log.info("metrics of [" + name + "] start");
         stopwatch.start();
+        return this;
     }
 
     @Override
-    public void stop() {
+    public ApplicationStartUp stop() {
         stopwatch.stop();
-        System.out.println("metrics of[" + name + "],cost time: " + stopwatch.elapsed(timeUnit) + ")");
+        log.info("metrics of [" + name + "],cost time: " + stopwatch.elapsed(timeUnit) + ")");
+        return this;
     }
 }
