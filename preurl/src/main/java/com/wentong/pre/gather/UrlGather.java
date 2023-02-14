@@ -1,22 +1,23 @@
-package com.wentong;
+package com.wentong.pre.gather;
 
 import cn.hutool.core.io.FileUtil;
 import com.wentong.pre.filter.Filter;
 import com.wentong.pre.filter.GuavaBloomFilter;
 import com.wentong.pre.generator.Base62Generator;
 import com.wentong.pre.generator.UrlGenerator;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.Optional;
 
 import static com.wentong.constants.Constants.BASE_DIR;
 
-public class Main {
+@Component
+public class UrlGather {
 
     private static final int EVERY = 1000000;
 
-    public static void main(String[] args) {
-
+    public String gather() {
         UrlGenerator generator = new Base62Generator();
         Filter filter = new GuavaBloomFilter();
 
@@ -27,8 +28,18 @@ public class Main {
         for (int i = 0; i < EVERY; i++) {
             String generate = generator.generate();
             boolean notContains = filter.filter(generate);
-            if (notContains) {
+            if (!notContains) {
                 counter++;
+            } else {
+                // retry three times
+                for (int j = 0; j < 3; j++) {
+                    generate = generator.generate();
+                    notContains = filter.filter(generate);
+                    if (!notContains) {
+                        counter++;
+                        break;
+                    }
+                }
             }
             stringBuilder.append(generate);
         }
@@ -55,7 +66,7 @@ public class Main {
         } else {
             FileUtil.writeString(stringBuilder.toString(), BASE_DIR + counter, "utf-8");
         }
-
-
+        return stringBuilder.toString();
     }
+
 }

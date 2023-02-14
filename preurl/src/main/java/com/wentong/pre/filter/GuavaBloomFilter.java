@@ -14,7 +14,10 @@ public class GuavaBloomFilter implements Filter {
 
     @Override
     public boolean filter(String url) {
-        bloomFilter.put(url);
-        return bloomFilter.mightContain(url);
+        boolean contains = bloomFilter.mightContain(url);
+        if (!contains) {
+            bloomFilter.put(url);
+        }
+        return contains;
     }
 }
