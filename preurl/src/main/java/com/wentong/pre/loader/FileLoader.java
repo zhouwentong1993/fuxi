@@ -38,6 +38,8 @@ public class FileLoader implements Loader {
         String[] cut = StrUtil.cut(allData, 6);
         log.info("加载到的数据个数：{}",cut.length);
         applicationStartUp.stop();
+        FileUtil.del(filePath);
+        log.info("删除文件：{}", filePath);
         return CollUtil.newArrayList(cut);
     }
 
