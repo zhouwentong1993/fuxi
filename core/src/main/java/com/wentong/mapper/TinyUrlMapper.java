@@ -1,7 +1,7 @@
-package com.wentong.pre.mapper;
+package com.wentong.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.wentong.pre.vo.TinyUrl;
+import com.wentong.vo.TinyUrl;
 
 public interface TinyUrlMapper extends BaseMapper<TinyUrl> {
 
