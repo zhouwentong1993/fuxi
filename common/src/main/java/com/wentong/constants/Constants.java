@@ -6,6 +6,6 @@ public class Constants {
 
     public static final String URL_PREFIX = "http://s.sk/";
 
-    public static final int MIN_FILE_SIZE = 5;
+    public static final int MIN_DATA_SIZE = 5 * 100* 10000;
 
 }

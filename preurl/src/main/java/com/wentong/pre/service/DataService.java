@@ -24,4 +24,8 @@ public class DataService {
         return queue.poll(500, TimeUnit.MILLISECONDS);
     }
 
+    public static int size() {
+        return queue.size();
+    }
+
 }
