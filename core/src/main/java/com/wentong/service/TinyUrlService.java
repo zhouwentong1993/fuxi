@@ -31,6 +31,8 @@ public class TinyUrlService {
 
     public String transUrl(String sourceUrl) {
         String shortUrl = HTTPClientUtil.getByPath("http://localhost:8080/number/generator?sourceUrl=" + sourceUrl);
+        // 这里可以通过消息队列的方式处理，将保存请求发到消息队列里面。避免堵住本地消息。
+        // 消费端可以通过批量写入的方式进行优化。
         CompletableFuture.runAsync(() -> {
             TinyUrl tinyUrl = new TinyUrl();
             tinyUrl.setUrl(shortUrl);
