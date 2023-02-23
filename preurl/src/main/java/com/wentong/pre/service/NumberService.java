@@ -13,7 +13,6 @@ import static com.wentong.constants.Constants.URL_PREFIX;
 
 /**
  * 数字生成服务
- * todo 需要有一个后台进程监听文件的数量，如果小于 5 个，生成文件。
  */
 @Service
 @Slf4j
