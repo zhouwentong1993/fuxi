@@ -37,17 +37,16 @@ public class UrlSaverConsumer extends ServiceThread {
     public void run() {
         log.info("UrlSaverConsumer started");
         while (!isStopped()) {
-            for (int i = 0; i < BATCH_SIZE; i++) {
-                TinyUrl tinyUrl = null;
+            long startTime = System.currentTimeMillis();
+            while (list.size() < BATCH_SIZE && System.currentTimeMillis() - startTime < 2000) {
                 try {
-                    tinyUrl = UrlQueue.QUEUE.poll(1, TimeUnit.SECONDS);
+                    TinyUrl tinyUrl = UrlQueue.QUEUE.poll(1, TimeUnit.SECONDS);
+                    if (tinyUrl != null) {
+                        list.add(tinyUrl);
+                    }
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                if (tinyUrl == null) {
                     break;
                 }
-                list.add(tinyUrl);
             }
             tinyUrlService.saveBatch(list);
             // 休息 5 秒，每次批量插入 5000 条数据
