@@ -1,6 +1,7 @@
 package com.wentong.queue;
 
 import com.google.common.collect.Lists;
+import com.wentong.client.RedisClientUtil;
 import com.wentong.saver.TinyUrlService;
 import com.wentong.thread.ServiceThread;
 import com.wentong.vo.TinyUrl;
@@ -38,7 +39,7 @@ public class UrlSaverConsumer extends ServiceThread {
         log.info("UrlSaverConsumer started");
         while (!isStopped()) {
             long startTime = System.currentTimeMillis();
-            while (list.size() < BATCH_SIZE || System.currentTimeMillis() - startTime < 2000) {
+            while (list.size() < BATCH_SIZE && System.currentTimeMillis() - startTime < 2000) {
                 try {
                     TinyUrl tinyUrl = UrlQueue.QUEUE.poll(1, TimeUnit.SECONDS);
                     if (tinyUrl != null) {
@@ -49,6 +50,7 @@ public class UrlSaverConsumer extends ServiceThread {
                 }
             }
             tinyUrlService.saveBatch(list);
+            list.forEach(t -> RedisClientUtil.set(t.getUrl(), t.getSourceUrl(), 10, TimeUnit.MINUTES));
             log.info("save {} urls", list.size());
             list.clear();
             // 休息 5 秒，每次批量插入 5000 条数据

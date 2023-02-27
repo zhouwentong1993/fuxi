@@ -1,13 +1,14 @@
 package com.wentong.controller;
 
 import com.wentong.service.TinyUrlService;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.IOException;
 import java.net.URI;
 
 @Controller
@@ -26,8 +27,8 @@ public class TinyUrlController {
         return tinyUrlService.transUrl(sourceUrl);
     }
 
-    @GetMapping("/visit/{tinyUrl}")
-    public ResponseEntity<Void> visit(@PathVariable String tinyUrl, HttpServletResponse response) throws IOException {
+    @GetMapping("/visit")
+    public ResponseEntity<Void> visit(@RequestParam("tinyUrl") String tinyUrl) {
         String realUrl = tinyUrlService.visit(tinyUrl);
         return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(realUrl)).build();
     }

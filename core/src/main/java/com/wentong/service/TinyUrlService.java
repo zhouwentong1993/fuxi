@@ -1,6 +1,7 @@
 package com.wentong.service;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.wentong.client.HTTPClientUtil;
 import com.wentong.client.RedisClientUtil;
@@ -41,6 +42,7 @@ public class TinyUrlService {
             tinyUrl.setCreateTime(new Date());
             tinyUrl.setUpdateTime(new Date());
             UrlSaverProducer.put(tinyUrl);
+            FileUtil.appendString(shortUrl, "url.txt", "UTF-8");
         }, ThreadPools.SAVER_EXECUTOR);
         return shortUrl;
     }

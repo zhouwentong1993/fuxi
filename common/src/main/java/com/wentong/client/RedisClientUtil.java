@@ -30,4 +30,9 @@ public final class RedisClientUtil {
         redissonClient.getBucket(key).set(value, time, timeUnit);
     }
 
+    public static void main(String[] args) {
+        set("test", "test");
+        System.out.println(get("test"));
+    }
+
 }
