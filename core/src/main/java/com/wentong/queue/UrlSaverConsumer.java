@@ -1,7 +1,7 @@
 package com.wentong.queue;
 
 import com.google.common.collect.Lists;
-import com.wentong.service.TinyUrlServiceImpl;
+import com.wentong.saver.TinyUrlService;
 import com.wentong.thread.ServiceThread;
 import com.wentong.vo.TinyUrl;
 import jakarta.annotation.PostConstruct;
@@ -20,11 +20,11 @@ public class UrlSaverConsumer extends ServiceThread {
 
     private static final int BATCH_SIZE = 5000;
 
-    private final TinyUrlServiceImpl tinyUrlService;
+    private final TinyUrlService tinyUrlService;
 
     List<TinyUrl> list = Lists.newArrayListWithCapacity(BATCH_SIZE);
 
-    public UrlSaverConsumer(TinyUrlServiceImpl tinyUrlService) {
+    public UrlSaverConsumer(TinyUrlService tinyUrlService) {
         this.tinyUrlService = tinyUrlService;
     }
 
@@ -38,7 +38,7 @@ public class UrlSaverConsumer extends ServiceThread {
         log.info("UrlSaverConsumer started");
         while (!isStopped()) {
             long startTime = System.currentTimeMillis();
-            while (list.size() < BATCH_SIZE && System.currentTimeMillis() - startTime < 2000) {
+            while (list.size() < BATCH_SIZE || System.currentTimeMillis() - startTime < 2000) {
                 try {
                     TinyUrl tinyUrl = UrlQueue.QUEUE.poll(1, TimeUnit.SECONDS);
                     if (tinyUrl != null) {
@@ -49,8 +49,10 @@ public class UrlSaverConsumer extends ServiceThread {
                 }
             }
             tinyUrlService.saveBatch(list);
+            log.info("save {} urls", list.size());
+            list.clear();
             // 休息 5 秒，每次批量插入 5000 条数据
-            waitForRunning(5000);
+            waitForRunning(2000);
         }
     }
 
